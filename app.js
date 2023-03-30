@@ -1,11 +1,42 @@
 const express = require("express");
+const winston = require("winston");
 const app = express();
 const port = 3000;
 
-app.get("/", (req, res) => res.type('html').send(html));
+const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.json(),
+  defaultMeta: { service: "user-service" },
+  transports: [
+    new winston.transports.Console({
+      format: winston.format.simple(),
+    }),
+  ],
+});
+
+logger.log({
+  level: "info",
+  message: "Importing app dependencies",
+});
+
+logger.log({
+  level: "info",
+  message: "Creating Express app",
+});
+
+logger.log({
+  level: "info",
+  message: "Defining routes",
+});
+
+app.get("/", (req, res) => res.type("html").send(html));
+
+logger.log({
+  level: "info",
+  message: "Starting express app",
+});
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-
 
 const html = `
 <!DOCTYPE html>
@@ -56,4 +87,4 @@ const html = `
     </section>
   </body>
 </html>
-`
+`;
